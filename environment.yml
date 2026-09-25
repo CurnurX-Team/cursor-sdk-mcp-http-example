@@ -1,0 +1,9 @@
+name: cursor-sdk
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - cursor-sdk==1.0.32
+      - python-dotenv==1.2.3
