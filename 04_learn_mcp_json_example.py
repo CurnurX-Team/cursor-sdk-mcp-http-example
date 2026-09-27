@@ -18,7 +18,7 @@ load_dotenv(root / ".env")
 
 
 async def main() -> None:
-    # 프로젝트 MCP는 브릿지 workspace 안의 .cursor/mcp.json 을 읽는다.
+    # project 설정은 cwd를 감싸는 가장 가까운 git 루트의 .cursor/mcp.json을 읽는다.
     async with await AsyncClient.launch_bridge(workspace=learn_workspace) as client:
         result = await AsyncAgent.prompt(
             "Microsoft Learn MCP의 검색 도구로 'Azure Functions MCP 트리거'를 검색해 줘. "

@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+.notion-mcp-oauth.json
+.notion-mcp-oauth.tmp
 
 # Python
 __pycache__/

@@ -23,7 +23,7 @@ async를 처음 본다면 아래 네 가지만 알면 이 파일을 읽을 수 �
     CursorClient -> AsyncClient
     Agent        -> AsyncAgent
 
-실행: python async_example_with_guide.py
+실행: python 02_async_example_with_guide.py
 `.env`에는 `CURSOR_API_KEY=...` 한 줄이 있어야 한다.
 """
 

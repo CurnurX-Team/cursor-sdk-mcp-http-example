@@ -6,11 +6,13 @@ from cursor_sdk import (
     AgentOptions,
     AsyncAgent,
     AsyncClient,
+    HttpMcpServerConfig,
     LocalAgentOptions,
     ModelParameterValue,
     ModelSelection,
 )
 from dotenv import load_dotenv
+from notion_mcp_oauth import get_notion_mcp_access_token
 
 root = Path(__file__).resolve().parent
 workspace = root / "workspace"
@@ -18,6 +20,10 @@ load_dotenv(root / ".env")
 
 
 async def main() -> None:
+    # OAuth는 HTTP MCP 연결 전에 끝나야 한다. 최초 실행에서는 브라우저에서
+    # 워크스페이스를 승인하고, 이후에는 저장된 refresh token을 사용한다.
+    access_token = await asyncio.to_thread(get_notion_mcp_access_token)
+
     async with await AsyncClient.launch_bridge(workspace=workspace) as client:
         result = await AsyncAgent.prompt(
             "Notion MCP로 최근에 수정한 페이지 제목 하나를 찾아서 알려 줘. "
@@ -30,10 +36,13 @@ async def main() -> None:
                     id="grok-4.7",
                     params=[ModelParameterValue(id="fast", value="true")],
                 ),
-                local=LocalAgentOptions(
-                    cwd=str(workspace),
-                    setting_sources=["all"],
-                ),
+                local=LocalAgentOptions(cwd=str(workspace)),
+                mcp_servers={
+                    "notion": HttpMcpServerConfig(
+                        url="https://mcp.notion.com/mcp",
+                        headers={"Authorization": f"Bearer {access_token}"},
+                    ),
+                },
             ),
             client=client,
         )
