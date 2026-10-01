@@ -22,6 +22,7 @@ load_dotenv(root / ".env")
 async def main() -> None:
     # OAuth는 HTTP MCP 연결 전에 끝나야 한다. 최초 실행에서는 브라우저에서
     # 워크스페이스를 승인하고, 이후에는 저장된 refresh token을 사용한다.
+    # add comments
     access_token = await asyncio.to_thread(get_notion_mcp_access_token)
 
     async with await AsyncClient.launch_bridge(workspace=workspace) as client:
